@@ -22,8 +22,23 @@ async function webCat() {
     })
 }
 
-if(process.argv[2].slice(0, 7) === "http://") {
-    webCat(process.argv[2])
+async function write(text) {
+    fs.writeFile('new.txt', text, 'utf-8', (err, data) => {
+        if(err) {
+            console.log(err);
+            process.exit(1);
+        }
+        console.log(data);
+    })
+}
+
+if(process.argv[2] === "--out") {
+    write(process.argv[3]);
 } else {
-    readLocal(process.argv[2])
+    if(process.argv[2].slice(0, 7) === "http://") {
+        webCat(process.argv[2])
+    } else {
+        readLocal(process.argv[2])
+    }
+
 }
